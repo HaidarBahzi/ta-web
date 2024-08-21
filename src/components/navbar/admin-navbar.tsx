@@ -18,14 +18,14 @@ export function NavbarAdmin({ link }: { link: string }) {
 
   createEffect(() => {
     async function fetchDetailNavbar() {
-      await updateSession();
+      // await updateSession();
 
-      const session = await getDataSession();
+      // const session = await getDataSession();
 
       setDetailNavbar({
-        imgUser: session.imgUser || "",
-        namaUser: session.namaUser || "",
-        userId: session.idUser || "",
+        imgUser:  "test",
+        namaUser:   "test",
+        userId:  "test",
       });
     }
 
