@@ -1,10 +1,10 @@
 "use server";
 
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { defaultSession, SessionData, sessionOptions } from "@/lib";
-import { redirect } from "next/navigation";
-import prisma from "@/utils/lib/prisma";
+// import { getIronSession } from "iron-session";
+// import { cookies } from "next/headers";
+// import { defaultSession, SessionData, sessionOptions } from "@/lib";
+// import { redirect } from "next/navigation";
+// import prisma from "@/utils/lib/prisma";
 
 export async function getSession() {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
