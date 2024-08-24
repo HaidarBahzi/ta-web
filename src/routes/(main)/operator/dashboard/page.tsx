@@ -1,24 +1,17 @@
 "use client";
 
 import { MenuBreadCrumbs } from "@/components/menu";
+import { useEffect, useState } from "react";
 import { StatsMenu, VerticalBarChart } from "@/components/dashboard";
-import {
-  FaUsers,
-  FaHeadSideCough,
-  FaUserFriends,
-  FaHandsHelping,
-} from "react-icons/fa";
+import { FaHeadSideCough, FaHandsHelping } from "react-icons/fa";
 import { GetDashboardAdmin } from "@/utils/server/dashboard/dashboard";
 import { getDataSession } from "@/utils/lib/session";
-import { createEffect, createSignal } from "solid-js";
 
 export default function Page() {
-  const [detailDashboard, setDetailDashboard] = createSignal({
+  const [detailDashboard, setDetailDashboard] = useState({
     username: "",
     pengaduan: 0,
     permohonan: 0,
-    user: 0,
-    pegawai: 0,
     chart_unconfirm: Array(12).fill(0),
     chart_confirm: Array(12).fill(0),
     chart_progress: Array(12).fill(0),
@@ -26,30 +19,22 @@ export default function Page() {
     chart_done: Array(12).fill(0),
   });
 
-  createEffect(() => {
+  useEffect(() => {
     async function fetchDetailDashboard() {
-      try {
-        const session = await getDataSession();
+      const session = await getDataSession();
 
-        const statistic = await GetDashboardAdmin();
+      const statistic = await GetDashboardAdmin();
 
-        setDetailDashboard({
-          username: session.namaUser!,
-          pengaduan: statistic.pengaduan,
-          permohonan: statistic.permohonan,
-          user: statistic.user,
-          pegawai: statistic.pegawai,
-          chart_unconfirm: statistic.statistkUnconfirm.map(
-            (item) => item.count
-          ),
-          chart_confirm: statistic.statistikConfirmed.map((item) => item.count),
-          chart_progress: statistic.statistikProgress.map((item) => item.count),
-          chart_reject: statistic.statistikRejected.map((item) => item.count),
-          chart_done: statistic.statistkDone.map((item) => item.count),
-        });
-      } catch (e) {
-        console.error(e);
-      }
+      setDetailDashboard({
+        username: session.namaUser!,
+        pengaduan: statistic.pengaduan,
+        permohonan: statistic.permohonan,
+        chart_unconfirm: statistic.statistkUnconfirm.map((item) => item.count),
+        chart_confirm: statistic.statistikConfirmed.map((item) => item.count),
+        chart_progress: statistic.statistikProgress.map((item) => item.count),
+        chart_reject: statistic.statistikRejected.map((item) => item.count),
+        chart_done: statistic.statistkDone.map((item) => item.count),
+      });
     }
 
     fetchDetailDashboard();
@@ -63,31 +48,16 @@ export default function Page() {
         titleLinkArray={[]}
         endTitle={`Selamat Datang, ${detailDashboard.username}`}
       />
++
 
       <div class="form-control gap-10">
         <div class="flex gap-5 z-0">
-          <StatsMenu
-            color={"#0D9276"}
-            count={detailDashboard.pegawai}
-            icon={<FaUsers />}
-            title={"Pegawai Aktif"}
-            link={"/admin/menu_user/pegawai"}
-          />
-
-          <StatsMenu
-            color={"#10439F"}
-            count={detailDashboard.user}
-            icon={<FaUserFriends />}
-            title={"User Aktif"}
-            link={"/admin/menu_user/users"}
-          />
-
           <StatsMenu
             color={"#FFA800"}
             count={detailDashboard.pengaduan}
             icon={<FaHeadSideCough />}
             title={"Pengaduan"}
-            link={"/admin/menu_layanan/pengaduan"}
+            link={"/operator/menu_layanan/pengaduan"}
           />
 
           <StatsMenu
@@ -95,7 +65,7 @@ export default function Page() {
             count={detailDashboard.permohonan}
             icon={<FaHandsHelping />}
             title={"Permohonan"}
-            link={"/admin/menu_layanan/permohonan_bantuan"}
+            link={"/operator/menu_layanan/permohonan_bantuan"}
           />
         </div>
 
